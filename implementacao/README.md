@@ -1,4 +1,8 @@
 # Read
+o bd é o h2, podendo ser acessado ao iniciar o spring e acessando o localhost:8080/h2
+e apertar entrar.
+se necessário:
+modificar jdbc url para: jdbc:h2:mem:ithappens-test
 
 ## Back-End
   - domains: as entidades do banco que foram requisitadas(produto, filial, cliente, funcionário, estoque e pedido);
@@ -7,6 +11,8 @@
   - controllers: utilizado para alimentar a parte do cliente (rest);
   * controllers/dto e form: apenas para receber e mandar informações só com o necessário e não precisar poluir e fornecer formações à mais para o cliente;
   - miscs (miscelanious): guardar classes váriadas como enums e exceptions(sendo o ultimo não utilizado).
+## OBS:
+__não é necessário nenhuma execução de script para crianção do banco de dados. Tudo será feito ao instalar as dependências que estão no pom.xml e executar o arquivo InventoryApplication.java como spring application__
 
 ## Front-End
 Infelizmente houve alguns imprevistos e não pude finalizar as telas com o react
