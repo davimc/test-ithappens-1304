@@ -29,6 +29,7 @@ public class StockService {
     }*/
     public Stock findStockBy(Branch branch, String description, String barcode, String sequential) throws NoSuchElementException{
         try {
+
             Optional<Stock> stock = stockRepository.findByBranchAndProduct(branch, productRepository.findByDescriptionOrBarcodeOrSequential(description, barcode, sequential).get());
             if (stock.isPresent()) {
                 return stock.get();

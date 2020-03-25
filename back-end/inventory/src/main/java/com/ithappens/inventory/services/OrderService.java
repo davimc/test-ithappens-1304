@@ -1,12 +1,12 @@
 package com.ithappens.inventory.services;
 
+import com.ithappens.inventory.controllers.dtos.OrderDto;
 import com.ithappens.inventory.domains.*;
 import com.ithappens.inventory.miscs.enums.ItemStatusEnum;
 import com.ithappens.inventory.miscs.enums.OrderTypeEnum;
 import com.ithappens.inventory.miscs.enums.PaymentFormatEnum;
 import com.ithappens.inventory.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -30,6 +30,9 @@ public class OrderService {
 
     private static Order order;
 
+    public OrderDto informtationsOrder(){
+        return new OrderDto(clientRepository.findAll(),employeeRepository.findAll(),branchRepository.findAll());
+    }
     public Order startOrder(Order order){
         this.order = order;
         return order;
@@ -48,18 +51,15 @@ public class OrderService {
             orderRepository.save(order);
         }
         return order;
-        System.out.println("ok");
     }
-
-
-
-
-
-    public Item addItemToOrder(String description, String barcode, String sequential)throws NoSuchElementException{
+    public Item addItemOrder(String description, String barcode, String sequential)throws NoSuchElementException{
 
             Stock stock = stockService.findStockBy(order.getBranch(),description,barcode,sequential);
+
             Item item;
             if(stockService.haveInStock(stock, 1)) {
+
+
                 if (hasItemInOrder(stock) == null) {
                     item = new Item(order, stock);
 
@@ -86,19 +86,23 @@ public class OrderService {
     }
 
 
-    public void removeItemToOrder(Item item){
-        Item itemOnOder =getItemOfItemsList(item);
-        itemOnOder.cancelStatus();
-        order.subtractsTotal(item.getStock().getPrice(),item.getQuantity());
-        itemRepository.save(itemOnOder);
+    public Item removeItemOrder(Long itemId) {
+        Item itemOnOrder = getItemOfItemsList(itemRepository.findById(itemId).get());
+        if (!itemOnOrder.getItemStatus().equals(ItemStatusEnum.CANCELED)){
+            itemOnOrder.cancelStatus();
+            order.subtractsTotal(itemOnOrder.getStock().getPrice(), itemOnOrder.getQuantity());
+            itemRepository.save(itemOnOrder);
+            return itemOnOrder;
+        }else{
+            throw new NoSuchElementException();
+        }
 
     }
-    public Item addQuantityToItem(Long itemId, int quantity)throws NoSuchElementException{
+    public Item addQuantityItem(Long itemId, int quantity)throws NoSuchElementException{
 
         Item itemOnOrder = getItemOfItemsList(itemRepository.findById(itemId).get());
         if( itemOnOrder!=null) {
             if (stockService.haveInStock(stockService.findStockBy(order.getBranch(), itemOnOrder.getStock().getProduct()), 1)) {
-                System.out.println("ok");
                 itemOnOrder.addQuantity(quantity);
                 order.sumTotal(itemOnOrder.getStock().getPrice(), quantity);
                 itemRepository.save(itemOnOrder);
@@ -107,11 +111,11 @@ public class OrderService {
         return itemOnOrder;
     }
 
-    public Item removeQuantityToItem(Long itemId,int quantity){
+    public Item removeQuantityItem(Long itemId,int quantity){
         Item itemOnOrder = getItemOfItemsList(itemRepository.findById(itemId).get());
         itemOnOrder.removeQuantity(quantity);
         if(getItemOfItemsList(itemOnOrder).getQuantity()==0)
-            removeItemToOrder(itemOnOrder);
+            removeItemOrder(itemOnOrder.getId());
         else
             order.subtractsTotal(itemOnOrder.getStock().getPrice(),quantity);
         return itemOnOrder;
@@ -162,7 +166,7 @@ public class OrderService {
          return stream.collect(Collectors.toList());*/
         ArrayList<Stock> stocks = new ArrayList<>();
         for (Item item : order.getItems()) {
-            System.out.println(item.getStock().getId().equals(stock.getId()));
+
             if(item.getStock().equals(stock))
                 return item;
         }

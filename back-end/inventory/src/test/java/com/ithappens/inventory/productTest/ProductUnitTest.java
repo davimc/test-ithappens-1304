@@ -37,6 +37,7 @@ public class ProductUnitTest {
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         this.validator = factory.getValidator();
         product = new Product("rice", "1265468","1c5754fd");
+        productRepository.save(product);
     }
 
     private String getViolation(Set<ConstraintViolation<Product>> restrictions){
@@ -66,7 +67,9 @@ public class ProductUnitTest {
 
     @Test
     public void testSearchByDescripton(){
-        Assert.assertEquals(productRepository.findByDescriptionOrBarcodeOrSequential("soups","","").get().getId(),productRepository.findById(1L).get().getId());
+        Product prod = productRepository.findByDescriptionOrBarcodeOrSequential(product.getDescription(),"","").get();
+        System.out.println(prod.getDescription());
+        Assert.assertEquals(prod.getDescription(),productRepository.findById(product.getId()).get().getDescription());
     }
     @Test
     public void testSearchByBarcode(){

@@ -24,6 +24,7 @@ public class StockForm {
     }
 
     public StockForm(String productDescrition, String productBarcode, String productSequential) {
+
         this.productDescrition = productDescrition;
         this.productBarcode = productBarcode;
         this.productSequential = productSequential;

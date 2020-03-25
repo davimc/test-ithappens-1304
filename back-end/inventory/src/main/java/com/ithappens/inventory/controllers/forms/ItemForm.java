@@ -6,6 +6,7 @@ import com.ithappens.inventory.repositories.ItemRepository;
 public class ItemForm {
     private Long itemId;
     private int quantity;
+    private String obs;
 
     public ItemForm() {
     }
@@ -20,6 +21,10 @@ public class ItemForm {
         this.quantity = item.getQuantity();
     }
 
+    public ItemForm(String obs) {
+        this.obs = obs;
+    }
+
     public Long getItemId() {
         return itemId;
     }
@@ -28,5 +33,7 @@ public class ItemForm {
         return quantity;
     }
 
-
+    public String getObs() {
+        return obs;
+    }
 }
