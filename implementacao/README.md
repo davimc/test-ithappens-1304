@@ -6,6 +6,7 @@
   - services: para "encapsular" as regras de negócio que a parte do cliente não precisa saber;
   - controllers: utilizado para alimentar a parte do cliente (rest);
   * controllers/dto e form: apenas para receber e mandar informações só com o necessário e não precisar poluir e fornecer formações à mais para o cliente;
+  - miscs (miscelanious): guardar classes váriadas como enums e exceptions(sendo o ultimo não utilizado).
 
 ## Front-End
 Infelizmente houve alguns imprevistos e não pude finalizar as telas com o react
