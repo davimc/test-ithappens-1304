@@ -10,7 +10,7 @@
 ## Front-End
 Infelizmente houve alguns imprevistos e não pude finalizar as telas com o react
 
-O documento que está na pasta foi exportado pelo Insomnia e pode ser importado para o mesmo.
+O documento que está na pasta foi exportado pelo **Insomnia** e pode ser importado para o mesmo.
 
 ### passo 1:
 	- Cadastra Pedido: cria um pedido, cadastrando o branch(filial), identificação do cliente(cpf), identificação do funcionário(identificação fictícia), o tipo de pedido(Entrada ou Saída) e a observação de entrega;
